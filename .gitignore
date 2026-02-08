@@ -347,3 +347,5 @@ yarn-error.log*
 
 # Bower
 bower_components/
+
+.sonarqube
