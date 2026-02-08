@@ -14,15 +14,14 @@ permissions:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   TF_VAR_subscription_id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
-  TF_VAR_foodcore-backend-resource-group: ${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}
-  TF_VAR_foodcore-backend-storage-account: ${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}
-  TF_VAR_foodcore-backend-container: ${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}
-  TF_VAR_foodcore-backend-infra-key: ${{secrets.FOODCORE_INFRA_BACKEND_AZURE_KEY}}
-  TF_VAR_swagger_path: "./openapi/openapi.json"
+  TF_VAR_videocore-backend-resource-group: ${{secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME}}
+  TF_VAR_videocore-backend-storage-account: ${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}
+  TF_VAR_videocore-backend-container: ${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}
+  TF_VAR_videocore-backend-infra-key: ${{secrets.VIDEOCORE_INFRA_BACKEND_AZURE_KEY}}
 
 defaults:
   run:
-    working-directory: ./function/FoodcoreAuth
+    working-directory: ./function/VideoCoreAuth
 
 jobs:
 
@@ -99,7 +98,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dotnet sonarscanner begin \
-            /k:"FIAP-SOAT-TECH-TEAM_foodcore-auth" \
+            /k:"FIAP-SOAT-TECH-TEAM_videocore-auth" \
             /o:"fiap-soat-tech-team" \
             /d:sonar.token="${{ secrets.SONAR_CLOUD_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="${{ github.workspace }}/function/TestResults/**/coverage.opencover.xml" \
@@ -117,7 +116,7 @@ jobs:
       - name: Run Tests with Coverage
         working-directory: ./function
         run: |
-          dotnet test TC4.sln \
+          dotnet test VideoCoreAuth.sln \
             --configuration Release \
             --no-build \
             --collect:"XPlat Code Coverage" \
@@ -139,60 +138,19 @@ jobs:
 
       - name: Publish Function
         working-directory: ./function
-        run: dotnet publish FoodcoreAuth/function.csproj --configuration Release --output ./publish
+        run: dotnet publish VideoCoreAuth/function.csproj --configuration Release --output ./publish
 
       - name: Zip package
         working-directory: ./function
         run: |
           cd publish
           zip -r ../functionapp.zip .
-
-      - name: Generate OpenApi File
-        working-directory: ./function/FoodcoreAuth
-        run: |
-          cat <<EOF > .env
-          AWS_CREDENTIALS="[default]
-          aws_access_key_id=EXAMPLE
-          aws_secret_access_key=EXAMPLE
-          aws_session_token=EXAMPLE"
-          
-          AWS_REGION=EXAMPLE
-          
-          COGNITO_USER_POOL_ID=EXAMPLE
-          COGNITO_APP_CLIENT_ID=EXAMPLE
-          
-          DEFAULT_CUSTOMER_PASSWORD=EXAMPLE
-          GUEST_USER_EMAIL=EXAMPLE
-          EOF
-          export FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
-
-          openapiurl="http://localhost:7025/openapi/v3.json"
-
-          func start --port 7025 & max_retries=12 count=0
-          until curl -s $openapiurl > /dev/null; do
-            count=$((count+1))
-            if [ $count -ge $max_retries ]; then
-              echo "Function não respondeu após: $((max_retries*5)) segundos ❌"
-              exit 1
-            fi
-            echo "Aguardando a function iniciar...⌚ ($count/$max_retries)"
-            sleep 5
-          done
-
-          echo "Function está no ar 🚀, gerando OpenApi..."
-          curl -o openapi.json $openapiurl
-          
+         
       - name: Upload Function App Artifact
         uses: actions/upload-artifact@v4
         with:
           name: functionapp-zip
           path: ./function/functionapp.zip
-      
-      - name: Upload OpenApi File Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: openapi
-          path: ./function/FoodcoreAuth/openapi.json
 
   terraform:
     runs-on: ubuntu-latest
@@ -213,12 +171,6 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-
-      - name: Download artifacts - OpenApi File
-        uses: actions/download-artifact@v4
-        with:
-          name: openapi
-          path: ./terraform/openapi
 
       - name: Terraform Fmt
         id: fmt

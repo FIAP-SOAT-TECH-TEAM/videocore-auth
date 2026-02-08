@@ -18,7 +18,6 @@ env:
   TF_VAR_foodcore-backend-storage-account: ${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}
   TF_VAR_foodcore-backend-container: ${{secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}
   TF_VAR_foodcore-backend-infra-key: ${{secrets.FOODCORE_INFRA_BACKEND_AZURE_KEY}}
-  TF_VAR_swagger_path: "./openapi/openapi.json"
 
 jobs:
   infra-info:
@@ -133,19 +132,7 @@ jobs:
           check_artifacts: true
           name_is_regexp: false
           if_no_artifact_found: fail
-          path: terraform
-    
-      - name: Download artifacts - OpenApi File
-        uses: dawidd6/action-download-artifact@v11
-        with:
-          name: openapi
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: ci.yaml
-          workflow_search: true
-          check_artifacts: true
-          name_is_regexp: false
-          if_no_artifact_found: fail
-          path: terraform/openapi     
+          path: terraform   
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan

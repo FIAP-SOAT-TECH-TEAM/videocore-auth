@@ -3,7 +3,7 @@
     type        = string
     description = "Azure Subscription ID"
   }
-
+  
 # remote states
   variable "videocore-backend-resource-group" {
     type        = string
