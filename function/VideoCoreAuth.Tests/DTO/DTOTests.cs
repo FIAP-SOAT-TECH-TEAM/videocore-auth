@@ -12,7 +12,7 @@ public class ErrorDTOTests
         var before = DateTime.UtcNow;
 
         // Act
-        var dto = new ErrorDTO
+        var dto = new ErrorDto
         {
             Status = 400,
             Message = "Error",
@@ -30,7 +30,7 @@ public class ErrorDTOTests
     public void ErrorDTO_ShouldSetStatusCorrectly()
     {
         // Arrange & Act
-        var dto = new ErrorDTO
+        var dto = new ErrorDto
         {
             Status = 404,
             Message = "Not found",
@@ -45,7 +45,7 @@ public class ErrorDTOTests
     public void ErrorDTO_ShouldSetMessageCorrectly()
     {
         // Arrange & Act
-        var dto = new ErrorDTO
+        var dto = new ErrorDto
         {
             Status = 500,
             Message = "Internal server error",
@@ -60,7 +60,7 @@ public class ErrorDTOTests
     public void ErrorDTO_ShouldSetPathCorrectly()
     {
         // Arrange & Act
-        var dto = new ErrorDTO
+        var dto = new ErrorDto
         {
             Status = 400,
             Message = "Error",
@@ -78,7 +78,7 @@ public class UserDetailsDTOTests
     public void UserDetailsDTO_ShouldSetSubjectCorrectly()
     {
         // Arrange & Act
-        var dto = new UserDetailsDTO
+        var dto = new UserDetailsDto
         {
             Subject = "sub-123",
             Name = "Test",
@@ -93,7 +93,7 @@ public class UserDetailsDTOTests
     public void UserDetailsDTO_ShouldSetNameCorrectly()
     {
         // Arrange & Act
-        var dto = new UserDetailsDTO
+        var dto = new UserDetailsDto
         {
             Subject = "sub-123",
             Name = "João Silva",
@@ -108,7 +108,7 @@ public class UserDetailsDTOTests
     public void UserDetailsDTO_ShouldSetEmailCorrectly()
     {
         // Arrange & Act
-        var dto = new UserDetailsDTO
+        var dto = new UserDetailsDto
         {
             Subject = "sub-123",
             Name = "Test",

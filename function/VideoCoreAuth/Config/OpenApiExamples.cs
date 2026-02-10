@@ -6,14 +6,14 @@ using Newtonsoft.Json.Serialization;
 
 namespace VideoCore.Auth.Config
 {
-  public class ErrorDTOExample : OpenApiExample<ErrorDTO>
+  public class ErrorDtoExample : OpenApiExample<ErrorDto>
   {
-    public override IOpenApiExample<ErrorDTO> Build(NamingStrategy namingStrategy)
+    public override IOpenApiExample<ErrorDto> Build(NamingStrategy? namingStrategy = null)
     {
       Examples.Add(
           OpenApiExampleResolver.Resolve(
               "ErrorDTOExample",
-              new ErrorDTO
+              new ErrorDto
               {
                 Timestamp = DateTime.UtcNow,
                 Status = 500,
@@ -28,14 +28,14 @@ namespace VideoCore.Auth.Config
     }
   }
 
-  public class UserDetailsDTOExample : OpenApiExample<UserDetailsDTO>
+  public class UserDetailsDtoExample : OpenApiExample<UserDetailsDto>
   {
-    public override IOpenApiExample<UserDetailsDTO> Build(NamingStrategy namingStrategy)
+    public override IOpenApiExample<UserDetailsDto> Build(NamingStrategy? namingStrategy = null)
     {
       Examples.Add(
           OpenApiExampleResolver.Resolve(
               "UserDetailsDTOExample",
-              new UserDetailsDTO
+              new UserDetailsDto
               {
                 Subject = "c1a2b3c4-d5e6-7890-abcd-ef1234567890",
                 Name = "João da Silva",

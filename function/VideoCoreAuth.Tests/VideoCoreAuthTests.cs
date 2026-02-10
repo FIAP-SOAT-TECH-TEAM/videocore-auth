@@ -70,7 +70,7 @@ public class VideoCoreAuthTests
         // Assert
         result.Should().BeOfType<OkObjectResult>();
         var ok = (OkObjectResult)result;
-        ok.Value.Should().BeOfType<UserDetailsDTO>();
+        ok.Value.Should().BeOfType<UserDetailsDto>();
     }
 
     [Fact]

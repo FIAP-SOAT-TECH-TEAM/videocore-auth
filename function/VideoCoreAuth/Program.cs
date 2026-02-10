@@ -72,4 +72,4 @@ builder.ConfigureServices(services =>
     services.AddSingleton<ICognitoService, CognitoService>();
 });
 
-builder.Build().Run();
+await builder.Build().RunAsync();

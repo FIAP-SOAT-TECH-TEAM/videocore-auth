@@ -128,7 +128,7 @@ public class CommonPresenterTests
         var result = CommonPresenter.ToErrorDTO(exception, 400, "/test");
 
         // Assert
-        result.Should().BeOfType<ErrorDTO>();
+        result.Should().BeOfType<ErrorDto>();
     }
 
     [Fact]
