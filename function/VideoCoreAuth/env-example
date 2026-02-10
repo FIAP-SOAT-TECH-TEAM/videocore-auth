@@ -1,0 +1,9 @@
+AWS_CREDENTIALS="[default]
+aws_access_key_id=example
+aws_secret_access_key=example
+aws_session_token=example"
+
+AWS_REGION=example
+
+COGNITO_USER_POOL_ID=xxxxxxxxxxx
+COGNITO_APP_CLIENT_ID=xxxxxxxxxxx
