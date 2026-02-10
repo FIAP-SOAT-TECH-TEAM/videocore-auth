@@ -9,6 +9,6 @@ output "azfunc_name_from_remote" {
 }
 
 output "auth_api_validate_endpoint" {
-  value = module.apim.auth_api_validate_endpoint
+  value = module.info.auth_api_validate_endpoint
   description = "A URL do endpoint de validação da API de autenticação"
 }
