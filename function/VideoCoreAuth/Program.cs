@@ -49,6 +49,13 @@ builder.ConfigureServices(services =>
 {
     services.AddSingleton<IAmazonCognitoIdentityProvider>(sp =>
     {
+        if (string.IsNullOrEmpty(sessionToken))
+            return new AmazonCognitoIdentityProviderClient(
+                accessKey,
+                secretKey,
+                RegionEndpoint.GetBySystemName(region)
+            );
+
         return new AmazonCognitoIdentityProviderClient(
             accessKey,
             secretKey,
