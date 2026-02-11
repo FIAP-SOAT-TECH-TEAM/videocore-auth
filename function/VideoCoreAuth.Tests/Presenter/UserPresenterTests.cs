@@ -137,7 +137,7 @@ public class UserPresenterTests
         var result = UserPresenter.ToUserDetailsDTO(null, null);
 
         // Assert
-        result.Should().BeOfType<UserDetailsDTO>();
+        result.Should().BeOfType<UserDetailsDto>();
     }
 
     #endregion

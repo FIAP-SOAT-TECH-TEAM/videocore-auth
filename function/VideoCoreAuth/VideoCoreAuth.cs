@@ -20,11 +20,11 @@ namespace VideoCore.Auth
 
         [Function("ValidateToken")]
         [OpenApiIgnore]
-        [OpenApiOperation(operationId: "ValidateToken", tags: ["Auth"])]
+        [OpenApiOperation(operationId: "ValidateToken", tags: "Auth")]
         [OpenApiParameter(name: "access_token", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "Token JWT de acesso")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UserDetailsDTO), Description = "Token validado com sucesso")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.Unauthorized, contentType: "application/json", bodyType: typeof(ErrorDTO), Description = "Token inválido ou inexistente")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(ErrorDTO), Description = "Erro interno")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UserDetailsDto), Description = "Token validado com sucesso")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.Unauthorized, contentType: "application/json", bodyType: typeof(ErrorDto), Description = "Token inválido ou inexistente")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(ErrorDto), Description = "Erro interno")]
         public async Task<IActionResult> ValidateToken(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "validate")]
         HttpRequestData httpRequestData)

@@ -76,7 +76,7 @@ public class ErrorDTOExampleTests
     public void Build_ShouldReturnNonNullExample()
     {
         // Arrange
-        var example = new ErrorDTOExample();
+        var example = new ErrorDtoExample();
         var namingStrategy = new CamelCaseNamingStrategy();
 
         // Act
@@ -90,7 +90,7 @@ public class ErrorDTOExampleTests
     public void Build_ShouldContainExamples()
     {
         // Arrange
-        var example = new ErrorDTOExample();
+        var example = new ErrorDtoExample();
         var namingStrategy = new CamelCaseNamingStrategy();
 
         // Act
@@ -107,7 +107,7 @@ public class UserDetailsDTOExampleTests
     public void Build_ShouldReturnNonNullExample()
     {
         // Arrange
-        var example = new UserDetailsDTOExample();
+        var example = new UserDetailsDtoExample();
         var namingStrategy = new CamelCaseNamingStrategy();
 
         // Act
@@ -121,7 +121,7 @@ public class UserDetailsDTOExampleTests
     public void Build_ShouldContainExamples()
     {
         // Arrange
-        var example = new UserDetailsDTOExample();
+        var example = new UserDetailsDtoExample();
         var namingStrategy = new CamelCaseNamingStrategy();
 
         // Act

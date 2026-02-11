@@ -30,7 +30,7 @@ namespace VideoCore.Auth.Utils
                 foreach (var line in rawCreds.Split('\n'))
                 {
                     var trimmed = line.Trim();
-                    if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith("[")) continue;
+                    if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith('[')) continue;
 
                     var parts = trimmed.Split('=', 2);
                     if (parts.Length == 2)

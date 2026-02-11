@@ -6,8 +6,8 @@ namespace VideoCore.Auth.DTO
   /// <summary>
   /// DTO para representar erros.
   /// </summary>
-  [OpenApiExample(typeof(ErrorDTOExample))]
-  public class ErrorDTO
+  [OpenApiExample(typeof(ErrorDtoExample))]
+  public class ErrorDto
   {
     /// <summary>
     /// Timestamp do erro.

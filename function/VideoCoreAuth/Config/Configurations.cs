@@ -23,7 +23,7 @@ namespace VideoCore.Auth.Config
       License = new OpenApiLicense()
       {
         Name = "MIT",
-        Url = new Uri("http://opensource.org/licenses/MIT"),
+        Url = new Uri("https://opensource.org/licenses/MIT"),
       }
     };
 

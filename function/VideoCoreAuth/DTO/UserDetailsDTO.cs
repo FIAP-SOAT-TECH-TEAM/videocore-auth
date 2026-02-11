@@ -6,8 +6,8 @@ namespace VideoCore.Auth.DTO
   /// <summary>
   /// Data Transfer Object (DTO) para detalhes do usuário.
   /// </summary>
-  [OpenApiExample(typeof(UserDetailsDTOExample))]
-  public class UserDetailsDTO
+  [OpenApiExample(typeof(UserDetailsDtoExample))]
+  public class UserDetailsDto
   {
     /// <summary>
     /// Identificador único do usuário.
