@@ -56,13 +56,14 @@ jobs:
         working-directory: terraform
         run: terraform apply --refresh-only --auto-approve
 
-      - name: Get Function App Name from remote state
+      - name: Define outputs
         id: azfunc
         working-directory: terraform
         run: echo "azfunc_name=$(terraform output -raw azfunc_name_from_remote)" >> $GITHUB_OUTPUT
 
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     needs: infra-info
 
     steps:
@@ -99,6 +100,7 @@ jobs:
 
   terraform:
     runs-on: ubuntu-latest
+    environment: production
     needs: deploy
 
     defaults:

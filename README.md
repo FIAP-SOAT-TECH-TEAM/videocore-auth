@@ -15,7 +15,7 @@
     > ℹ️ Ou consultar output terraform: `apim_gateway_url`
 - **reportsWsLocalUrl:** `ws://localhost:8081`
 - **reportsWssApimUrl:** `wss://videocore-apim.azure-api.net`
-    > ℹ️ Ou consultar output terraform: `apim_gateway_url`
+    > ℹ️ Ou consultar output terraform: `apim_ws_gateway_url`
 - **videoCoreStartSubscription:** consultar output terraform: `apim_videocore_start_subscription_key`
     > ℹ️ Ou capturar via `Azure Console`
 - **reportsAuthorizationHeader:** consultar `access_token` retornado pelo `Cognito` pós autenticação
