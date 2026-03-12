@@ -9,15 +9,18 @@
 
 </div>
 
-Azure Function serverless responsável pela autenticação e autorização de usuários do sistema VideoCore. Integrada com AWS Cognito para gerenciamento de identidade. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Tech Challenge).
+Azure Function serverless responsável pela autenticação e autorização de usuários do sistema VideoCore. Integrada com AWS Cognito para gerenciamento de identidade. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Hackaton).
 
 <div align="center">
   <a href="#visao-geral">Visão Geral</a> •
-  <a href="#arquitetura">Arquitetura</a> •
+  <a href="#repositorios">Repositórios</a> •
   <a href="#tecnologias">Tecnologias</a> •
+  <a href="#estrutura">Estrutura</a> •
+  <a href="#terraform">Terraform</a> •
+  <a href="#tecnologias-infra">Tecnologias Infra</a> •
+  <a href="#arquitetura">Arquitetura</a> •
   <a href="#fluxo-auth">Fluxo de Autenticação</a> •
   <a href="#executando-testes">Executando os Testes</a> •
-  <a href="#repositorios">Repositórios</a> •
   <a href="#deploy">Fluxo de Deploy</a> •
   <a href="#instalacao">Instalação</a> •
   <a href="#contribuicao">Contribuição</a>
@@ -26,6 +29,9 @@ Azure Function serverless responsável pela autenticação e autorização de us
 ---
 
 <h2 id="visao-geral">📋 Visão Geral</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
 
 O **VideoCore Auth** é uma Azure Function que implementa o padrão **Lambda Authorizer**, responsável pela validação de tokens e identificação de usuários no sistema de processamento de vídeos.
 
@@ -43,7 +49,106 @@ O **VideoCore Auth** é uma Azure Function que implementa o padrão **Lambda Aut
 - **Always On**: Configurado para minimizar cold start
 - **OAuth 2.0 + OIDC**: Autorização padronizada e identidade federada
 - **Implicit Deny**: Qualquer falha de autenticação resulta em bloqueio
-- **Caching**: Tokens cacheados no APIM para performance
+
+</details>
+
+---
+
+<h2 id="repositorios">📁 Repositórios do Ecossistema</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+| Repositório | Responsabilidade | Tecnologias |
+|-------------|------------------|-------------|
+| **videocore-infra** | Infraestrutura base | Terraform, Azure, AWS |
+| **videocore-db** | Banco de dados | Terraform, Azure Cosmos DB |
+| **videocore-auth** | Microsserviço de autenticação | C#, .NET 9, ASP.NET |
+| **videocore-reports** | Microsserviço de relatórios | Java 25, GraalVM, Spring Boot 4, Cosmos DB |
+| **videocore-worker** | Microsserviço de processamento de vídeo | Java 25, GraalVM, Spring Boot 4, FFmpeg |
+| **videocore-notification** | Microsserviço de notificações | Java 25, GraalVM, Spring Boot 4, SMTP |
+| **videocore-frontend** | Interface web do usuário | Next.js 16, React 19, TypeScript |
+
+</details>
+
+---
+
+<h2 id="tecnologias">🔧 Tecnologias</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+| Categoria | Tecnologia |
+|-----------|------------|
+| **Runtime** | .NET 9 |
+| **Cloud** | Azure Functions |
+| **Identity** | AWS Cognito |
+| **Gateway** | Azure APIM |
+| **Testes** | xUnit, FluentAssertions |
+| **IaC** | Terraform |
+| **CI/CD** | GitHub Actions |
+| **Qualidade** | SonarQube |
+
+</details>
+
+---
+
+<h2 id="estrutura">📦 Estrutura do Projeto</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+```text
+function/
+├── VideoCoreAuth/
+│   ├── VideoCoreAuth.cs      # Endpoints da Function
+│   ├── Program.cs            # Entry point e DI
+│   ├── Config/               # Configurações e OpenAPI
+│   ├── DTO/                  # Data Transfer Objects
+│   ├── Model/                # Modelos de domínio
+│   ├── Presenter/            # Formatação de respostas
+│   ├── Services/             # Integração com Cognito
+│   └── Utils/                # Utilitários AWS
+├── docs/                     # Assets de documentação
+└── VideoCoreAuth.Tests/      # Testes unitários
+```
+
+</details>
+
+---
+
+<h2 id="terraform">🗄️ Módulos Terraform</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+O código `HCL` desenvolvido segue uma estrutura modular:
+
+| Módulo | Descrição |
+|--------|-----------|
+| **info** | Criação de Outputs terraform |
+
+> ⚠️ Os outpus criados são consumidos posteriormente em pipelines via `$GITHUB_OUTPUT` ou `Terraform Remote State`, para compartilhamento de informações. Tornando, desta forma, dinãmico o provisionamento da infraestrutura.
+
+</details>
+
+---
+
+<h2 id="tecnologias-infra">🔧 Tecnologias</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+| Categoria | Tecnologia |
+|-----------|------------|
+| **IaC** | Terraform |
+| **Banco de Dados** | Azure Cosmos DB (NoSQL) |
+| **Rede** | Azure VNet, Private Endpoint, Private DNS |
+| **Emulação** | Azure Cosmos DB Linux Emulator (Docker) |
+| **CI/CD** | GitHub Actions |
+| **Cloud** | Microsoft Azure |
+
+</details>
 
 ---
 
@@ -61,9 +166,9 @@ O sistema utiliza:
 
 O **AWS Cognito** atua como **Identity Provider (IdP)**, emitindo **JWTs compatíveis com OIDC**, enquanto a Azure Function valida e aplica regras de autorização.
 
-### 🎯 Padrão Lambda Authorizer
+### 🔐 Padrão Lambda Authorizer
 
-```
+```text
 Cliente → APIM → Azure Function → Cognito
                       ↓
               Validação JWT (JWKS)
@@ -90,38 +195,7 @@ Cliente → APIM → Azure Function → Cognito
 - **Expiração do token**
 - **Claims obrigatórias** (subject, email)
 
-### 📦 Estrutura do Projeto
-
-```
-function/
-├── VideoCoreAuth/
-│   ├── VideoCoreAuth.cs      # Endpoints da Function
-│   ├── Program.cs            # Entry point e DI
-│   ├── Config/               # Configurações e OpenAPI
-│   ├── DTO/                  # Data Transfer Objects
-│   ├── Model/                # Modelos de domínio
-│   ├── Presenter/            # Formatação de respostas
-│   ├── Services/             # Integração com Cognito
-│   └── Utils/                # Utilitários AWS
-└── VideoCoreAuth.Tests/      # Testes unitários
-```
-
 </details>
-
----
-
-<h2 id="tecnologias">🔧 Tecnologias</h2>
-
-| Categoria | Tecnologia |
-|-----------|------------|
-| **Runtime** | .NET 9 |
-| **Cloud** | Azure Functions |
-| **Identity** | AWS Cognito |
-| **Gateway** | Azure APIM |
-| **Testes** | xUnit, FluentAssertions |
-| **Qualidade** | SonarCloud |
-| **IaC** | Terraform |
-| **CI/CD** | GitHub Actions |
 
 ---
 
@@ -130,22 +204,7 @@ function/
 <details>
 <summary>Expandir para mais detalhes</summary>
 
-### Validação de Token
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant APIM
-    participant Function
-    participant Cognito
-
-    User->>APIM: Request com Bearer Token
-    APIM->>Function: Invoca função com token
-    Function->>Cognito: Valida JWT via JWKS
-    Cognito-->>Function: Token válido
-    Function-->>APIM: Retorna UserDetails
-    APIM->>AKS: Chamada autenticada (Auth-Subject header)
-```
+![System Design](docs/diagram/auth-sequence-mmd.svg)
 
 ### Resposta da Function
 
@@ -174,6 +233,9 @@ sequenceDiagram
 
 <h2 id="executando-testes">🧪 Executando os Testes</h2>
 
+<details>
+<summary>Expandir para mais detalhes</summary>
+
 ```bash
 # Navegar para a pasta da solution
 cd function
@@ -191,19 +253,7 @@ dotnet test VideoCoreAuth.sln --collect:"XPlat Code Coverage"
 dotnet test VideoCoreAuth.sln --logger "console;verbosity=detailed"
 ```
 
----
-
-<h2 id="repositorios">📁 Repositórios do Ecossistema</h2>
-
-| Repositório | Responsabilidade | Tecnologias |
-|-------------|------------------|-------------|
-| **videocore-infra** | Infraestrutura base (AKS, VNET, APIM, Key Vault) | Terraform, Azure, AWS |
-| **videocore-db** | Banco de dados | Terraform, Azure Cosmos DB |
-| **videocore-auth** | Autenticação (este repositório) | .NET 9, Azure Functions, Cognito |
-| **videocore-frontend** | Interface web do usuário | Next.js 16, React 19, TypeScript |
-| **videocore-reports** | Microsserviço de relatórios | Java 25, Spring Boot 4, Cosmos DB |
-| **videocore-worker** | Microsserviço de processamento de vídeo | Java 25, Spring Boot 4, FFmpeg |
-| **videocore-notification** | Microsserviço de notificações | Java 25, Spring Boot 4, SMTP |
+</details>
 
 ---
 
@@ -226,7 +276,7 @@ dotnet test VideoCoreAuth.sln --logger "console;verbosity=detailed"
 
 ### Ordem de Provisionamento
 
-```
+```text
 1. videocore-infra          (AKS, VNET, APIM)
 2. videocore-db             (Cosmos DB)
 3. videocore-auth           (Azure Function Authorizer - este repositório)
@@ -248,6 +298,9 @@ dotnet test VideoCoreAuth.sln --logger "console;verbosity=detailed"
 
 <h2 id="instalacao">🚀 Instalação e Uso</h2>
 
+<details>
+<summary>Expandir para mais detalhes</summary>
+
 ### Desenvolvimento Local
 
 ```bash
@@ -262,9 +315,24 @@ cp VideoCoreAuth/env-example VideoCoreAuth/.env
 func start
 ```
 
+### Postman
+
+### 🔗 Workspace: https://www.postman.com/pedroferrarezzo-2950189/workspace/fiap-soat-tech-team-8
+
+### ❓ Como preencher variáveis:
+
+- **azFuncLocalUrl:** `http://localhost:7025`
+- **cognitoDomainUrl:** `https://videocore-auth.auth.sa-east-1.amazoncognito.com`
+    > ℹ️ Ou consultar output terraform: `cognito_code_get_token_url`
+
+</details>
+
 ---
 
 <h2 id="contribuicao">🤝 Contribuição</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
 
 ### Fluxo de Contribuição
 
@@ -276,14 +344,13 @@ func start
 
 ### Licença
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+Este projeto está licenciado sob a MIT License.
+
+</details>
 
 ---
 
 <div align="center">
   <strong>FIAP - Pós-graduação em Arquitetura de Software</strong><br>
-  Tech Challenge 4
+  Hackaton (Tech Challenge 5)
 </div>
-- **videoCoreStartSubscription:** consultar output terraform: `apim_videocore_start_subscription_key`
-    > ℹ️ Ou capturar via `Azure Console`
-- **reportsAuthorizationHeader:** consultar `access_token` retornado pelo `Cognito` pós autenticação
